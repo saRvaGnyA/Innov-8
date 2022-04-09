@@ -4,27 +4,28 @@
                 <div class="p-4">
                     <h1
                         class="text-2xl font-bold text-center text-indigo-600 sm:text-3xl relative after:absolute after:bg-indigo-600 after:bottom-[-5px] after:left-1/4 after:h-[2px] after:w-1/2 after:origin-bottom-left after:scale-x-100 hover:after:origin-bottom-right hover:after:scale-x-0 after:transition-transform after:ease-in-out after:duration-300 mb-10">
-                        Chat with Person name
+                        Chat with {{personName}}
                     </h1>
                     <div class="flex flex-col flex-grow w-full bg-white shadow-xl rounded-lg my-4">
                         <div class="flex flex-col flex-grow h-1/16 p-4 overflow-auto">
                             {% for msg in msgList %}
-                            {% if msg[1]==10 %}
-                            <div class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
-                                <div>
-                                    <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
-                                        <p class="text-sm">{{msg}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            {% else %}
-                             <div class="flex w-full mt-2 space-x-3 max-w-xs">
+                            {% if msg[1] == to_id %}
+                            <div class="flex w-full mt-2 space-x-3 max-w-xs">
                                 <div>
                                     <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
-                                        <p class="text-sm">{{msg}}</p>
+                                        <p class="text-sm">{{msg[2]}} </p>
                                     </div>
                                 </div>
                             </div> 
+                            {% else %}
+                            <div class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                                <div>
+                                    <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                                        <p class="text-sm">{{msg[2]}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             {% endif %}
                             {% endfor %}
                             
@@ -51,7 +52,7 @@
                         <div class="bg-gray-300 p-4 flex justify-between w-full items-center">
                             <!-- <input class= type="text"
                                 placeholder="Type your message…"> -->
-                                <form action="{{ url_for('main.sendMsg',to_id=to_id) }}" class="space-y-6" method="POST">  
+                                <form action="{{ url_for('main.sendMsg',to_id=to_id,personName=personName) }}" class="space-y-6" method="POST">  
                                 {{ form.message(class="flex items-center h-10 w-full rounded px-3 text-sm",placeholder="Type your message…") }}
                             <!-- <button
                                 class="inline-block p-3 text-white bg-indigo-600 border border-indigo-600 rounded-full hover:bg-transparent hover:text-indigo-600 active:text-indigo-500 focus:outline-none focus:ring ml-4"

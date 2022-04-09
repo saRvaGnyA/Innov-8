@@ -1,6 +1,5 @@
 from asyncio.windows_events import NULL
 import base64
-
 import io
 import profile
 from PIL import Image
@@ -12,9 +11,9 @@ from flask_login import login_user, current_user, logout_user
 from matplotlib.pyplot import table
 from frontend import bcyrpt
 from frontend.models import Users
-from frontend.users.forms import ( AddEventForm, RegistrationForm, LoginForm,SearchUserForm)
+from frontend.users.forms import ( AddEventForm, RegistrationForm, LoginForm,SearchUserForm,Message)
 import sqlite3
-from frontend.users.forms import (AddProjectForm, CommentForm, EventRegisterForm)
+from frontend.users.forms import (AddProjectForm, CommentForm, EventRegisterForm,studentToSubmitProject)
 
 from flask import Flask, render_template, url_for, flash, session,redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
@@ -169,12 +168,43 @@ def getStudentList():
     
     return cursor.fetchall()  
 
+def sendMessage(to_id,msg):
+    conn = db_connection()
+    cursor = conn.cursor()
+    usr_id = userDetails()[0][0]
+    # tou=current_user.type_of_user
+
+    sql_query = '''INSERT into Message(user_id,user_msg ,to_id) values ({},"{}",{})'''.format(usr_id,msg,to_id)
+    print(sql_query)
+    cursor =cursor.execute(sql_query)
+    conn.commit()      
+
 # def userProjectDetails():
 #     conn = db_connection()
 #     cursor=conn.cursor()
 #     sql_query ='''
     
 #     '''
+
+def getMessage(to_id):
+    conn = db_connection()
+    cursor = conn.cursor()
+    usr_id = userDetails()[0][0]
+    sql_query='''SELECT * from Message WHERE user_id = {} and to_id = {} UNION SELECT * from Message WHERE user_id ={} and  to_id = {}'''.format(usr_id,to_id,to_id,usr_id)
+    # print(sql_query)
+    cursor =cursor.execute(sql_query)
+    ans =cursor.fetchall()
+    # print(ans)
+    return ans
+    
+
+def getOrganizerList():
+    conn=db_connection()
+    cursor=conn.cursor()
+    sql_query = '''
+    SELECT * FROM Organizer '''
+    cursor =cursor.execute(sql_query)
+    return cursor.fetchall()
 
 
 main = Blueprint('main', __name__)
@@ -185,8 +215,17 @@ def home():
     
     # print(current_user)
     formNew=SearchUserForm()
-    return render_template('dummyEvents.html',events=events,formNew=formNew)
+    return render_template('landing.html')
 
+
+@main.route('/sendMsg/<int:to_id>/<string:personName>',methods=['GET','POST'])
+def sendMsg(to_id,personName):
+    formNew=SearchUserForm()
+    form=Message()
+    msg=form.message.data
+    sendMessage(to_id,msg)
+    msgList = getMessage(to_id)
+    return render_template('inbox.html',formNew=formNew,to_id=to_id,form=form,msgList=msgList,personName=personName)
 
 @main.route('/eventsList',methods=['GET','POST'])
 def eventsList():
@@ -194,6 +233,18 @@ def eventsList():
     org_det = OrganizerDetail()
     formNew=SearchUserForm()
     return render_template('event.html',formNew=formNew,events=events,org_det=org_det)
+
+@main.route('/inbox/<int:to_id>/<string:personName>',methods=['GET','POST'])
+def inbox(to_id,personName):
+    formNew=SearchUserForm()
+    form=Message()
+    # msg=form.message.data
+    # print(msg)
+    # sendMessage(to_id,msg)
+    msgList=getMessage(to_id)
+    print(msgList)
+    return render_template('inbox.html',formNew=formNew,to_id=to_id,form=form,msgList=msgList,personName=personName)
+
 
 @main.route('/sponsorList',methods=['GET','POST'])
 def sponsorList():
@@ -282,7 +333,10 @@ def search():
         # print("type",typeofuser)
         userSearchResult=getUserList(typeofuser,Searchuser)
         formNew=SearchUserForm()
-        return render_template('dummydisplay.html',formNew=formNew,userSearchResult=userSearchResult,form=form,typeofuser=typeofuser)
+        # return redirect('/studentList',formNew=formNew,userSearchResult=userSearchResult,form=form,typeofuser=typeofuser)
+        if typeofuser=='1':
+            return render_template('studentSearch.html',formNew=formNew,userSearchResult=userSearchResult,form=form,typeofuser=typeofuser)
+        return redirect('/sponsorList')
 
     return render_template('dummySearch.html',form=form)
 
@@ -341,6 +395,13 @@ def studentList():
     stud_list=getStudentList()
     print(stud_list)
     return render_template('students_list.html',formNew=formNew,stud_list=stud_list)
+
+@main.route('/organizerList',methods=['GET','POST'])
+def organizerList():
+    formNew=SearchUserForm()
+    organizer_list=getOrganizerList()
+    print(organizer_list)
+    return render_template('organizers_list.html',formNew=formNew,organizer_list=organizer_list)
 
 @main.route('/getImage')
 def getImage():
@@ -471,3 +532,65 @@ def comment():
         except Exception as e:
             print(e)
     return render_template('comment.html',form=form,formNew=formNew)
+
+
+def funct(user_email,event_id):
+    conn=db_connection()
+    cursor=conn.cursor()
+    sql_query='''
+    SELECT * FROM Student WHERE student_email="{}" 
+    '''.format(user_email)
+    cursor.execute(sql_query)
+    student=cursor.fetchone()
+    
+    sql_query='''
+    SELECT * FROM Participants WHERE student_id={} AND event_id={}
+    '''.format(student[0],event_id)
+    cursor.execute(sql_query)
+    status=cursor.fetchone()
+    return status
+
+@main.route('/eventDetailsForStudent/<int:eventId>',methods=['GET','POST'])
+def eventDetailsForStudent(eventId):
+
+    conn=db_connection()
+    cursor=conn.cursor()
+
+    sql_query='''
+    SELECT * FROM Student WHERE student_email="{}"
+    '''.format(current_user.email)
+
+    cursor.execute(sql_query)
+    visitor_id=cursor.fetchall()[0][0]
+    print(visitor_id)
+    print(eventId)
+    sql_query='''
+    SELECT * FROM Participants WHERE student_id={} AND event_id={}
+    '''.format(visitor_id,eventId)
+    print(sql_query)
+    cursor.execute(sql_query)
+    data=cursor.fetchall()
+    print(data)
+    if len(data)==0:
+        return redirect(url_for('main.eventDetailsForVoting'))
+    else:
+        sql_query='''
+        SELECT * FROM Event WHERE event_id={}
+        '''.format(eventId)
+        cursor.execute(sql_query)
+        data=cursor.fetchone()
+        return render_template('event_details_for_student.html',data=data)
+
+
+@main.route('/eventDetailsForVoting')
+def eventDetailsForVoting():
+    conn=db_connection()
+    cursor=conn.cursor()
+
+    sql_query='''
+    SELECT * FROM Student WHERE student_email="{}"
+    '''.format(current_user.email)
+
+    cursor.execute(sql_query)
+    visitor_id=cursor.fetchone()[0]
+    return render_template('event_details_for_voting.html',visitor_id=visitor_id)

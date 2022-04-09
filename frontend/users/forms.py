@@ -130,6 +130,9 @@ class LoginForm(FlaskForm):
 #                                      validators=[DataRequired(), EqualTo('password')])
 #     submit = SubmitField('Reset Password')
 
+class Message(FlaskForm):
+    message = StringField("Type your message…")
+    submit=SubmitField("Send")
 
 class EventRegisterForm(FlaskForm):
     team_name=StringField("Team name",validators=[DataRequired()])
@@ -143,3 +146,7 @@ class EventRegisterForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment=StringField("Comment",validators=[DataRequired()])
     submit=SubmitField("Comment")
+
+
+class studentToSubmitProject(FlaskForm):
+    submit=SubmitField("Submit project")

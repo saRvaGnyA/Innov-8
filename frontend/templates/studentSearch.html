@@ -7,7 +7,7 @@
                     <a href="{{ url_for('main.myProfile', id=event[0] ,tou=typeofuser )}}">
                         <h5 class="text-xl font-bold text-gray-900">{{ event[1] }}</h5>
                     </a>
-                    <a href="{{ url_for('main.inbox',to_id=event[0]) }}">
+                    <a href="{{ url_for('main.inbox',to_id=event[0],personName=event[1]) }}">
                         <div class="inline-flex items-center mt-4 text-indigo-600">
                             <p class="text-lg font-medium inline">Message Student</p>
 

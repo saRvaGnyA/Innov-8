@@ -14,7 +14,8 @@ conn = sqlite3.connect("identifier.sqlite")
 cursor = conn.cursor()
 print("correct1")
 # sql_query = '''DELETE FROM ProjectTitle WHERE type_name = "Seminars";'''
-sql_query = '''DELETE FROM Sponsorship WHERE sponsor_id=1;'''
+sql_query = '''DELETE FROM Message;'''
+# sql_query = '''DELETE FROM Sponsorship WHERE sponsor_id=1;'''
 # sql_query= '''ALTER TABLE Project DROP COLUMN project_image_file'''
 # sql_query= '''ALTER TABLE Event AUTO_INCREMENT = 1; '''
 # sql_query = '''ALTER TABLE Event  WHERE event_id = 7;'''

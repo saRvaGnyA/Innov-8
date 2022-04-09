@@ -75,7 +75,7 @@ def login():
                     elif int(users.type_of_user)==3:
                         return redirect('/eventsForSponsor')
                     else:
-                        return redirect('/')
+                        return redirect('/account')
                 else:
                     flash('Login Unsuccessful. Please check email and password', 'danger')
 
