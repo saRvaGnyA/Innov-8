@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+{% block content %}
+<main class="w-full">
+    <section class="text-gray-600 body-font">
+        <div class="container mx-auto flex px-5 py-16 items-center justify-center flex-col">
+            <img class="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded" alt="hero"
+                src="https://dummyimage.com/720x600">
+            <div class="text-center w-full px-2">
+
+                <h1
+                    class="inline title-font sm:text-4xl text-3xl font-medium text-gray-900 relative after:absolute after:bg-gray-700 after:bottom-0 after:left-0 after:h-[2px] after:w-full after:translate-y-1 after:opacity-0 hover:after:translate-y-0 hover:after:opacity-100 after:transition after:ease-in-out after:duration-200">
+                    Project Name</h1>
+
+
+                <div class="text-gray-200 mt-9 mb-4"><span
+                        class="w-4 h-4 rounded-full bg-gray-600 inline-block animate-pulse"></span><span
+                        class="w-4 h-4 ml-4 rounded-full bg-gray-600 inline-block animate-pulse [animation-delay:0.2s]"></span><span
+                        class="w-4 h-4 ml-4 rounded-full bg-gray-600 inline-block [animation-delay:0.4s] animate-pulse"></span>
+                </div>
+
+                <div class="mb-8 leadiFng-relaxed sun-editor-editable">
+                    <p>Idhar aayega&nbsp;<strong>project description</strong>.</p>
+
+                    <p><br>
+                    </p>
+
+                    <p>Ekdam&nbsp;<em>mast dikhega&nbsp;</em>ye yaha</p>
+
+                    <p><br>
+                    </p>
+
+                    <p>Every project will have a full-fledged rich-text description.&nbsp;</p>
+
+                    <p style="margin-left: 25px;">Coz bachho ko MS Word jaisa use karne aata hai,
+                        warna
+                        markdown hi daal dete<br>
+                    </p>
+
+                    <p><br>
+                    </p>
+
+                    <p><br>
+                    </p>
+
+                    <p style="margin-left: 50px;">An
+                        example&nbsp;<strong>math&nbsp;</strong><u><strong>equation</strong></u>:
+                        <del>strikeout</del><br>
+                    </p>
+
+                    <p style="margin-left: 50px;">x<sup>2</sup>&nbsp;+ 2x + 1 = 0</p>
+
+                    <p style="margin-left: 50px;">Subscript and superscript enough lag rahe hai.
+                        Bachhe
+                        thodi <em><u><strong>LaTeX
+                                </strong></u></em>use karenge.</p>
+
+                    <p style="margin-left: 50px;"><br>
+                    </p>
+
+                    <p>I AM ADDING THIS FOR THE SAKE OF DUMMY FORMATTED TEXT. NIKAL DENA PRODUCTION
+                        ME.<br>
+                    </p>
+                </div>
+
+                <div class="flex justify-center mt-8">
+                    <button type="button"
+                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        Like 👍
+                    </button>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="inline text-xl font-medium text-gray-900">
+                        Comments
+                    </h3>
+                    <div
+                        class="flex mx-auto items-center justify-center shadow-lg mb-4 max-w-lg mt-4">
+                        <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2">
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                                <h2 class="px-4 pt-3 pb-2 text-gray-800">Add a new comment
+                                </h2>
+                                <div class="w-full md:w-full px-3 mb-2 mt-2">
+                                    <textarea
+                                        class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                                        name="body" placeholder='Type Your Comment'
+                                        required></textarea>
+                                </div>
+                                <div class="w-full md:w-full flex items-start px-3">
+
+                                    <div class="-mr-1">
+                                        <input type='submit'
+                                            class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100"
+                                            value='Post Comment'>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+
+                    <div
+                        class="flex flex-col mx-auto items-center justify-center shadow-lg mb-4 mt-4">
+                        <div class="w-full bg-white rounded-lg px-4 pt-2 mt-2">
+                            <div class="flex flex-col justify-around -mx-3 mb-6">
+                                <p class="px-4 pt-3 pb-2 text-gray-600 text-left">Comment 1 Lorem
+                                    ipsum dolor sit amet consectetur adipisicing elit. Perferendis
+                                    saepe quod, eveniet quisquam impedit et eaque consectetur ullam
+                                    culpa voluptates accusantium nam recusandae quia atque
+                                    blanditiis officiis neque non, provident quo similique soluta
+                                    modi.
+                                <p class="px-4 pt-3 pb-2 text-gray-800">By User 1
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="w-full bg-white rounded-lg px-4 pt-2 mt-2">
+                            <div class="flex flex-col justify-around -mx-3 mb-6">
+                                <p class="px-4 pt-3 pb-2 text-gray-600 text-left">Comment 2 Lorem
+                                    ipsum dolor sit amet consectetur adipisicing elit. Amet quae
+                                    nihil, quidem odit quis ipsa sapiente eum. Architecto, optio,
+                                    illum doloremque iure ad, fugit ex consequuntur harum in nostrum
+                                    doloribus alias laudantium.
+                                <p class="px-4 pt-3 pb-2 text-gray-800">By User 2
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}

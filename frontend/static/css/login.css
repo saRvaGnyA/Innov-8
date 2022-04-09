@@ -1,0 +1,16 @@
+body::after {
+    content              : "";
+    position             : fixed;
+    top                  : 0;
+    left                 : 0;
+    width                : 100%;
+    height               : 100%;
+    background-color     : #95ced5;
+    background-image     : url(../img/bg_login.png);
+    background-repeat    : round;
+    background-attachment: fixed;
+    background-position  : 75% 5%;
+    background-blend-mode: overlay;
+    opacity              : .57;
+    z-index              : -1;
+}

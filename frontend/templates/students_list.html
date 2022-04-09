@@ -1,0 +1,45 @@
+{% extends "layout.html" %}{% block content %}
+                <!-- Main content -->
+                <div class="flex p-4 justify-around flex-wrap">
+
+                    {% for stud in stud_list %}
+                    <div class="mt-8 text-gray-500 sm:pr-8 bg-white p-4 shadow-xl hover:shadow-2xl rounded-xl">
+                        <div class="flex flex-col justify-between items-center ">
+                            <a href="">
+                                <h5 class="text-xl font-bold text-gray-900">{{ stud[1] }}</h5>
+                            </a>
+                            <a href="">
+                                <div class="inline-flex items-center mt-4 text-indigo-600">
+                                    <p class="text-lg font-medium inline">Message Student</p>
+
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="w-6 h-6 ml-3 transition-transform transform group-hover:translate-x-3"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </div>
+                            </a>
+                        </div>
+                        <p class="mt-2 mb-4 text-sm sm:block">
+                            Student bio sliced to 15 words
+                        </p>
+                        <div class="flex items-center justify-around w-fu">
+                            <span
+                                class="block border border-green-600 rounded-full px-3 py-1.5 bg-green-100 text-green-600 font-medium text-xs">
+                                7 followers
+                            </span>
+
+                            <span
+                                class="block border bg-orange-100 text-orange-500 border-current px-3 py-1.5 rounded-full text-xs font-medium">
+                                17 projects
+                            </span>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+
+
+                </div>
+{% endblock %}
