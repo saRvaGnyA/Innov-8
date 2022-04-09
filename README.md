@@ -21,6 +21,7 @@
 - [Tech Stack](#tech-stack)
 - [Progress](#progress)
 - [Future Scope](#future-scope)
+- [Database Schema](#database-schema)
 - [Project Setup](#project-setup)
 - [Usage](#usage)
 - [Contributors](#contributors)
@@ -58,6 +59,10 @@
 ## 🔮Future Scope
 
 - ss
+
+## ⚙Database Schema
+
+[SQL Schema Diagram](https://drawsql.app/dcodestarbots/diagrams/innov-8)
 
 ## 🛠Project Setup
 
