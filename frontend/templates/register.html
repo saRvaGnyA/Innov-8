@@ -36,19 +36,23 @@
             {{ form.username(placeholder="Username",class="w-full px-4 py-2
             border rounded-md focus:outline-none focus:ring
             focus:ring-sky-300")}}
-            
+            <!-- <input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-sky-300"
+                        type="text" name="email" placeholder="Username" required autocomplete="off" /> -->
             {{ form.email(placeholder="Email address",class="w-full px-4 py-2
             border rounded-md focus:outline-none focus:ring
             focus:ring-sky-300")}}
-            
+            <!-- <input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-sky-300"
+                        type="email" name="email" placeholder="Email address" required autocomplete="off" /> -->
             {{ form.password(placeholder="Password",class="w-full px-4 py-2
             border rounded-md focus:outline-none focus:ring
             focus:ring-sky-300")}}
-          
+            <!-- <input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-sky-300"
+                        type="password" name="password" placeholder="Password" required /> -->
             {{ form.confirm_password(placeholder="Confirm
             Password",class="w-full px-4 py-2 border rounded-md
             focus:outline-none focus:ring focus:ring-sky-300")}}
-           
+            <!-- <input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-sky-300"
+                        type="password" name="password" placeholder="Confirm Password" required /> -->
 
             <div>
               {{ form.submit(class="w-full group [transform:translateZ(0)] px-6
@@ -58,7 +62,11 @@
               before:scale-x-0 hover:before:origin-[0_0]
               hover:before:scale-x-100 before:transition before:ease-in-out
               before:duration-500 text-center") }}
-            
+              <!-- <button type="submit"
+                            class="w-full group [transform:translateZ(0)] px-6 py-3 rounded-lg  bg-info-light overflow-hidden relative before:absolute before:bg-info-dark before:bottom-0 before:left-0 before:h-full before:w-full before:origin-[100%_100%] before:scale-x-0 hover:before:origin-[0_0] hover:before:scale-x-100 before:transition before:ease-in-out before:duration-500 text-center">
+                            <span
+                                class="relative z-0 text-sky-100 group-hover:text-sky-100  transition ease-in-out duration-500 font-semibold">Register</span>
+                        </button> -->
             </div>
           </form>
 

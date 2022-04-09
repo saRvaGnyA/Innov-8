@@ -319,7 +319,8 @@ def project():
     #current_user = > type , id
     # usr_det=userDetails()
     formNew=SearchUserForm()
-    return render_template('project.html',formNew=formNew)
+    
+    return render_template('project_revamp.html',formNew=formNew)
 
 @main.route('/search',methods=['GET','POST'])
 def search():
@@ -361,11 +362,6 @@ def createProject():
         byteString=form.projectImg.data.read()
         blob=base64.b64encode(byteString)
         
-        print(ProjectTitle)
-        print(ProjectShortDes)
-        print(ProjectDes)
-        print(DriveLink)
-        print(blob)
         try:
             sql_query='''
             INSERT into Project({},{},{},{},{})
@@ -374,16 +370,35 @@ def createProject():
             conn = db_connection()
             cursor= conn.cursor()
             cursor.execute(sql_query,(ProjectTitle,ProjectShortDes,ProjectDes,DriveLink,blob))
+            conn.commit()
             
-            conn.commit()
-            userid=userDetails()[0][0]
-            projectid=searchProject(ProjectTitle)[0][0]
             sql_query='''
-            INSERT into ProjectLink(project_id,student_id) values({},{})
-            '''.format(projectid,userid)
+            SELECT * FROM Student where student_email="{}"
+            '''.format(current_user.email)
             cursor.execute(sql_query)
-            print(cursor)           
+            submitter=cursor.fetchone()[0]
+
+            print(submitter)
+
+            sql_query='''
+            SELECT * FROM Project WHERE project_title="{}"
+            '''.format(ProjectTitle)
+
+            cursor.execute(sql_query)
+            ProjectDatas=cursor.fetchone()
+            project=ProjectDatas[0]
+
+            sql_query='''
+            INSERT INTO ProjectLink(project_id,student_id) VALUES(?,?)
+            '''
+            print(submitter,project)
+            cursor.execute(sql_query,(project,submitter))
             conn.commit()
+
+            DATA=ProjectDatas[5]
+            image=DATA[0][0]
+            return render_template('project.html',formNew=formNew,ProjectDatas=ProjectDatas,image=image.decode("utf-8"))
+
         except Exception as e:
             print(e)
         return redirect('/create-project')  
@@ -552,7 +567,7 @@ def funct(user_email,event_id):
 
 @main.route('/eventDetailsForStudent/<int:eventId>',methods=['GET','POST'])
 def eventDetailsForStudent(eventId):
-
+    formNew=SearchUserForm()
     conn=db_connection()
     cursor=conn.cursor()
 
@@ -570,27 +585,105 @@ def eventDetailsForStudent(eventId):
     print(sql_query)
     cursor.execute(sql_query)
     data=cursor.fetchall()
-    print(data)
+    # print(datas)
+    sql_query='''
+    SELECT * FROM Event WHERE event_id={}
+    '''.format(eventId)
+    cursor.execute(sql_query)
+    datas=cursor.fetchone()
     if len(data)==0:
-        return redirect(url_for('main.eventDetailsForVoting'))
+        
+        return redirect(url_for('main.eventDetailsForVoting',eventId=eventId,formNew=formNew))
     else:
-        sql_query='''
-        SELECT * FROM Event WHERE event_id={}
-        '''.format(eventId)
-        cursor.execute(sql_query)
-        data=cursor.fetchone()
-        return render_template('event_details_for_student.html',data=data)
+
+        return render_template('event_details_for_student.html',datas=datas,formNew=formNew)
+
+@main.route('/Timeline')
+def Timeline():
+    conn=db_connection()
+    cursor =conn.cursor()
+    formNew=SearchUserForm()
+    userid=userDetails()[0][0]
+
+    # SELECT * FROM Project WHERE project_id = (
+    #     SELECT project_id FROM ProjectLink WHERE student_id = (
+                 
+    sql_query='''SELECT follower_id FROM Follow WHERE following_id = {}'''.format(userid)
+    # cursor.execute(sql_query).fetchall()
+    det=cursor.execute(sql_query).fetchall()
+    print(det)
+    det2=list()
+    for i in det:
+        # print(i)
+        sql_query='''SELECT project_id FROM ProjectLink WHERE student_id ={}'''.format(i[0])
+        x=cursor.execute(sql_query).fetchall()
+        print(x)
+        if x!=[]:
+            sql_query='''SELECT * FROM Student WHERE student_id ={}'''.format(i[0])
+            p=cursor.execute(sql_query).fetchall()[0]
+            sql_query='''SELECT * FROM Project WHERE project_id ={}'''.format(x[0][0])
+            p2=cursor.execute(sql_query).fetchall()[0]
+            det2.append([p2,p])
+            # print(x)
+    print("det",det2[0][1])
+    return render_template('log_timeline.html',formNew=formNew,det2=det2)
+    
 
 
-@main.route('/eventDetailsForVoting')
-def eventDetailsForVoting():
+@main.route('/voteForProject/<int:team_id>/<int:student_id>/<int:event_id>')
+def voteForProject(team_id,student_id,event_id):
+    conn = db_connection()
+    cursor = conn.cursor()
+    usr_id = userDetails()[0][0]
+    sql_query = '''INSERT into Votes(team_id,student_id ,event_id) values ({},{},{})'''.format(team_id,student_id,event_id)
+    # print(sql_query)
+    cursor =cursor.execute(sql_query)
+    conn.commit()
+    return redirect(url_for('main.eventDetailsForVoting',eventId=event_id))
+
+
+
+@main.route('/eventDetailsForVoting/<int:eventId>')
+def eventDetailsForVoting(eventId):
     conn=db_connection()
     cursor=conn.cursor()
-
+    sql_query='''
+    SELECT * FROM Event WHERE event_id={}
+    '''.format(eventId)
+    cursor.execute(sql_query)
+    datas=cursor.fetchone()
+  
+    sql_query='''
+    SELECT * FROM Team WHERE event_id = {}
+    '''.format(eventId)
+    cursor.execute(sql_query)
+    teamdet=cursor.fetchall()
+    sql_query='''
+    SELECT count(team_id),student_id,team_id from Participants GROUP BY team_id HAVING event_id={}
+    '''.format(eventId)
+    cursor.execute(sql_query)
+    req=cursor.fetchall()
+    # print(req)
+    # count team-leader team_id
+    team_leader_name = list()
+    team_name_info=list()
+    team_num=list()
+    for i in req:
+        sql_query='''SELECT team_name from Team where team_id ={}'''.format(i[2])
+        team_name_info.append(cursor.execute(sql_query).fetchall()[0][0])
+        sql_query='''SELECT student_name from Student where student_id ={}'''.format(i[1])
+        team_leader_name.append(cursor.execute(sql_query).fetchall()[0][0])
+        team_num.append(i[0])
+    print(team_name_info)
+    print(team_leader_name)
+    print(team_num)
+    rn=len(team_leader_name)
     sql_query='''
     SELECT * FROM Student WHERE student_email="{}"
     '''.format(current_user.email)
 
     cursor.execute(sql_query)
     visitor_id=cursor.fetchone()[0]
-    return render_template('event_details_for_voting.html',visitor_id=visitor_id)
+    print(visitor_id)
+    formNew=SearchUserForm()
+    return render_template('event_details_for_voting.html',eventId=eventId,req=req,formNew=formNew,datas=datas,visitor_id=visitor_id,team_name_info=team_name_info,team_leader_name=team_leader_name,team_num=team_num,rn=rn)
