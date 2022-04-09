@@ -1,0 +1,2 @@
+except:
+#     print("Incorrect query")
