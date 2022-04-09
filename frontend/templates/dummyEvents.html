@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Innov-8</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="../static/css/build.css" />
+    <link rel="stylesheet" href="../static/css/login.css" />
+</head>
+
+<body>
+
+    <div class="flex flex-col items-center justify-center min-h-screen p-4 space-y-4 antialiased text-gray-900">
+
+        <!-- <a href="" class="inline-block mb-6 font-black tracking-wider uppercase text-5xl text-chamki-green-800">
+            innov-8
+        </a> -->
+        <main>
+            {% for event in events %}
+            <div class="card col-md-3" style="padding: 0px; display: inline-block; margin:30px;  background: gray">
+                <div class="card-body">
+                  <h5 class="card-title" name="patientName">{{ event[6] }}</h5>
+
+                  <!-- <a href="#" class="btn btn-primary" name="gotoPatientDet">{{ current_user.email }}</a>            </div> -->
+            </div>
+            <div>
+                <form  class="flex w-full md:justify-start justify-center items-end" style="user-select: auto;" action="{{ url_for('main.myProfile', id=event[0] ,tou=typeofuser )}}">
+                    
+                
+                </form>
+            </div>
+            {% endfor %}
+        </main>
+        
+    </div>
+
+</body>
+
+</html>

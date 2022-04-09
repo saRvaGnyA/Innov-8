@@ -1,0 +1,122 @@
+{% extends "layout.html" %} {% block content %}
+<!-- Main content -->
+<div class="flex flex-col p-4">
+  <div class="w-full px-4 py-16 mx-auto sm:px-6 lg:px-8">
+    <h1
+      class="text-2xl font-bold text-center text-indigo-600 sm:text-3xl relative after:absolute after:bg-indigo-600 after:bottom-[-5px] after:left-1/4 after:h-[2px] after:w-1/2 after:origin-bottom-left after:scale-x-100 hover:after:origin-bottom-right hover:after:scale-x-0 after:transition-transform after:ease-in-out after:duration-300"
+    >
+      Form a new team
+    </h1>
+    <div class="max-w-lg mx-auto">
+      <form
+        action=""
+        method="POST"
+        class="p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl"
+      >
+        <div>
+          <label for="teamname" class="text-sm font-medium">Team Name</label>
+
+          <div class="relative mt-1">
+            {{ form.team_name(placeholder="Enter Team Name",class="w-full p-4
+            pr-12 text-sm border-gray-200 rounded-lg shadow-sm",id="teamname")
+            }}
+            <!-- <input type="text" id="teamname"
+                                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                                            placeholder="Enter Team Name" /> -->
+          </div>
+        </div>
+
+        <div>
+          <label for="teamcount" class="text-sm font-medium"
+            >Team Members Count</label
+          >
+          <div class="relative mt-1">
+            {{ form.number_of_members(id="teamcount",placeholder="Enter Team
+            Members Count",class="w-full p-4 pr-12 text-sm border-gray-200
+            rounded-lg shadow-sm",id="teamcount") }}
+            <!-- <input type="number" id="teamcount"
+                                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                                            placeholder="Enter Team Members Count" /> -->
+          </div>
+        </div>
+
+        <div>
+          <label for="team1" class="text-sm font-medium"
+            >Team Member 1 Email</label
+          >
+
+          <div class="relative mt-1">
+            {{ form.member_01_email(class="w-full p-4 pr-12 text-sm
+            border-gray-200 rounded-lg shadow-sm",id="team1",placeholder="Enter
+            Team Member 1 Email") }}
+            <!-- <input type="email" id="team1"
+                                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                                            placeholder="Enter Team Member 1 Email" /> -->
+          </div>
+        </div>
+        <div>
+          <label for="team2" class="text-sm font-medium"
+            >Team Member 2 Email</label
+          >
+
+          <div class="relative mt-1">
+            {{ form.member_02_email(class="w-full p-4 pr-12 text-sm
+            border-gray-200 rounded-lg shadow-sm",id="team2",placeholder="Enter
+            Team Member 2 Email") }}
+
+            <!-- <input type="email" id="team2"
+                                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                                            placeholder="Enter Team Member 2 Email" /> -->
+          </div>
+        </div>
+        <div>
+          <label for="team3" class="text-sm font-medium"
+            >Team Member 3 Email</label
+          >
+
+          <div class="relative mt-1">
+            {{ form.member_03_email(class="w-full p-4 pr-12 text-sm
+            border-gray-200 rounded-lg shadow-sm",id="team3",placeholder="Enter
+            Team Member 3 Email") }}
+
+            <!-- <input type="email" id="team3"
+                                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                                            placeholder="Enter Team Member 3 Email" /> -->
+          </div>
+        </div>
+        <div>
+          <label for="team4" class="text-sm font-medium"
+            >Team Member 4 Email</label
+          >
+
+          <div class="relative mt-1">
+            {{ form.member_04_email(class="w-full p-4 pr-12 text-sm
+            border-gray-200 rounded-lg shadow-sm",id="team4",placeholder="Enter
+            Team Member 4 Email") }}
+
+            <!-- <input type="email" id="team4"
+                                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                                            placeholder="Enter Team Member 4 Email" /> -->
+          </div>
+        </div>
+
+        <div class="relative group">
+          <div
+            class="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"
+          ></div>
+
+          <div class="relative bg-gray-200 text-black rounded-lg text-center">
+            {{ form.submit(class="block w-full px-5 py-3 text-sm font-medium
+            text-white bg-indigo-500 rounded-lg") }}
+            <!-- <button type="submit"
+                                            class="block w-full px-5 py-3 text-sm font-medium text-white bg-indigo-500 rounded-lg">
+                                            Make Team
+                                        </button> -->
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

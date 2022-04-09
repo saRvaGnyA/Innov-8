@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="flex flex-col justify-around flex-1 h-full p-4">
+
+
+    <div class="w-full px-4 py-16 mx-auto sm:px-6 lg:px-8 mt-52">
+        <h1
+            class="text-2xl font-bold text-center text-indigo-600 sm:text-3xl relative after:absolute after:bg-indigo-600 after:bottom-[-5px] after:left-1/4 after:h-[2px] after:w-1/2 after:origin-bottom-left after:scale-x-100 hover:after:origin-bottom-right hover:after:scale-x-0 after:transition-transform after:ease-in-out after:duration-300">
+            Create a new project
+        </h1>
+        <div class="max-w-lg mx-auto">
+
+
+            <form action="/create-project" method="POST" enctype='multipart/form-data' class="p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl">
+
+
+                <div>
+                    <label for="title" class="text-sm font-medium">Title</label>
+
+                    <div class="relative mt-1">
+                        {{ form.projecttitle(class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm") }}
+                        <!-- <input type="text" id="title"
+                            class=""
+                            placeholder="Enter Project Title" /> -->
+                    </div>
+                </div>
+                <div>
+                    <label for="shortdesc" class="text-sm font-medium">Short Description</label>
+
+                    <div class="relative mt-1">
+                        {{ form.projectShortDes(class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm") }}
+                        <!-- <input type="text" id="shortdesc"
+                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                            placeholder="Enter here " /> -->
+
+                    </div>
+                </div>
+                <div>
+                    <label for="briefdesc" class="text-sm font-medium">Brief Description</label>
+
+                    <div class="relative mt-1">
+                        {{ form.projectDes(class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm") }}
+                        <!-- <input type="text" id="shortdesc"
+                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                            placeholder="Enter here " /> -->
+
+                    </div>
+                </div>
+
+                <div>
+                    <label for="drivelink" class="text-sm font-medium">Video Link</label>
+
+                    <div class="relative mt-1">
+                        {{ form.driveLink(class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm") }}
+                        <!-- <input type="text" id="drivelink"
+                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                            placeholder="Google Drive, Youtube" /> -->
+
+                    </div>
+                </div>
+
+                 <div>
+                    <label for="sample" class="text-sm font-medium">Project Details</label>
+                        <!-- {{ form.richText(class="w-full",id="sample") }} -->
+                    <!-- <textarea id="sample"
+                        class="w-full">Add your <strong>project description</strong> here. Use the <em>rich-text</em> options</textarea> -->
+                </div> 
+
+                <div>
+                    <label class="text-sm font-medium" for="projectpic">Upload file</label>
+                    <!-- <input class="block" id="projectpic" type="file"> -->
+                        {{ form.projectImg(class="block") }}
+                </div>
+
+                <div class="relative group">
+                    <div
+                        class="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt">
+                    </div>
+                    
+                    <!-- <div class="relative bg-gray-200 text-black rounded-lg text-center"> -->
+
+                    <div>
+                        {{ form.submit(class="w-full group [transform:translateZ(0)] px-6 py-3 rounded-lg  bg-info-light overflow-hidden relative before:absolute before:bg-info-dark before:bottom-0 before:left-0 before:h-full before:w-full before:origin-[100%_100%] before:scale-x-0 hover:before:origin-[0_0] hover:before:scale-x-100 before:transition before:ease-in-out before:duration-500 text-center") }}
+                        <!-- <button type="submit"
+                            class="w-full group [transform:translateZ(0)] px-6 py-3 rounded-lg  bg-info-light overflow-hidden relative before:absolute before:bg-info-dark before:bottom-0 before:left-0 before:h-full before:w-full before:origin-[100%_100%] before:scale-x-0 hover:before:origin-[0_0] hover:before:scale-x-100 before:transition before:ease-in-out before:duration-500 text-center">
+                            <span
+                                class="relative z-0 text-sky-100 group-hover:text-sky-100  transition ease-in-out duration-500 font-semibold">Register</span>
+                        </button> -->
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
