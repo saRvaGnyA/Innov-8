@@ -11,16 +11,17 @@
                         <div class="max-w-lg mx-auto">
 
 
-                            <form action="" method="POST" class="p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl">
+                            <form action="/editProfile" method="POST" class="p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl">
 
 
                                 <div>
                                     <label for="title" class="text-sm font-medium">Name</label>
 
                                     <div class="relative mt-1">
-                                        <input type="text" id="title"
+                                        {{form.stud_name(placeholder="Display student name",class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm")}}
+                                        <!-- <input type="text" id="title"
                                             class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
-                                            placeholder="Display student name" />
+                                            placeholder="Display student name" /> -->
                                     </div>
                                 </div>
 
@@ -28,9 +29,11 @@
                                     <label for="title" class="text-sm font-medium">Email</label>
 
                                     <div class="relative mt-1">
-                                        <input type="text" id="title"
+                                        {{form.stud_email(placeholder="Enter brief description about yourself",class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm")}}
+
+                                        <!-- <input type="text" id="title"
                                             class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
-                                            placeholder="Display student email " />
+                                            placeholder="Display student email " /> -->
                                     </div>
                                 </div>
 
@@ -38,25 +41,37 @@
                                     <label for="shortdesc" class="text-sm font-medium">Brief Description</label>
 
                                     <div class="relative mt-1">
-                                        <input type="text" id="shortdesc"
+                                        {{form.stud_des(placeholder="Enter brief description about yourself",class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm")}}
+                                        <!-- <input type="text" id="shortdesc"
                                             class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
-                                            placeholder="Enter brief description about yourself" />
+                                            placeholder="Enter brief description about yourself" /> -->
 
                                     </div>
                                 </div>
 
-                                <div>
+                                <!-- <div>
                                     <label for="drivelink" class="text-sm font-medium">Skills & Interests</label>
 
                                     <div class="relative mt-1">
+                                        
                                         <input type="text" id="drivelink"
                                             class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
                                             placeholder="Add skills & interests here ( better if I make it dynamic)" />
 
                                     </div>
-                                </div>
+                                </div> -->
 
-                                
+                                <div>
+                                    <label for="interest" class="text-sm font-medium">Interests</label>
+
+                                    <div class="relative mt-1">
+                                        {{form.stud_interest(placeholder="Enter your Interest seperated by comma",class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm")}}
+                                        <!-- <input type="text" id="shortdesc"
+                                            class="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm"
+                                            placeholder="Enter brief description about yourself" /> -->
+
+                                    </div>
+                                </div>
 
                                 <div class="relative group">
                                     <div
@@ -64,10 +79,11 @@
                                     </div>
 
                                     <div class="relative bg-gray-200 text-black rounded-lg text-center">
-                                        <button type="submit"
+                                        <!-- <button type="submit"
                                             class="block w-full px-5 py-3 text-sm font-medium text-white bg-indigo-500 rounded-lg">
                                             Submit 
-                                        </button>
+                                        </button> -->
+                                        {{form.submit(class="block w-full px-5 py-3 text-sm font-medium text-white bg-indigo-500 rounded-lg")}}
                                     </div>
                                 </div>
 

@@ -11,7 +11,7 @@ from flask_login import login_user, current_user, logout_user
 from matplotlib.pyplot import table
 from frontend import bcyrpt
 from frontend.models import Users
-from frontend.users.forms import ( AddEventForm, RegistrationForm, LoginForm,SearchUserForm,Message)
+from frontend.users.forms import (EditProfile, AddEventForm, RegistrationForm, LoginForm,SearchUserForm,Message)
 import sqlite3
 from frontend.users.forms import (AddProjectForm, CommentForm, EventRegisterForm,studentToSubmitProject)
 
@@ -65,13 +65,12 @@ def getProjectList(usr_det):
     cursor =cursor.execute(sql_query)
     return cursor.fetchall()    
 
-
 def FollowUser(usr_det):
     conn = db_connection()
     cursor = conn.cursor()
     usr_id = userDetails()[0][0]
     # tou=current_user.type_of_user
-    sql_query = '''INSERT into Follow(follower_id,following_id) values ({},{})'''.format(usr_id,usr_det[0][0])
+    sql_query = '''INSERT into Follow(follower_id,following_id) values ({},{})'''.format( usr_det[0][0], usr_id)
     cursor =cursor.execute(sql_query)
     conn.commit()
 
@@ -80,7 +79,7 @@ def isFollowed(usr_det):
     cursor = conn.cursor()
     usr_id = userDetails()[0][0]
     # tou=current_user.type_of_user
-    sql_query = '''SELECT * from Follow WHERE follower_id = {} AND following_id = {}'''.format(usr_id,usr_det[0][0])
+    sql_query = '''SELECT * from Follow WHERE follower_id = {} AND following_id = {}'''.format(usr_det[0][0], usr_id)
     cursor =cursor.execute(sql_query)
     # conn.commit()
     # print(sql_query)
@@ -196,7 +195,8 @@ def getMessage(to_id):
     ans =cursor.fetchall()
     # print(ans)
     return ans
-    
+
+  
 
 def getOrganizerList():
     conn=db_connection()
@@ -216,6 +216,21 @@ def home():
     # print(current_user)
     formNew=SearchUserForm()
     return render_template('landing.html')
+
+
+@main.route('/displayProjects/<int:pId>')
+def displayProjects(pId):
+    conn=db_connection()
+    cursor=conn.cursor()
+    sql_query ='''
+    SELECT * FROM Project where project_id = {}
+    '''.format(pId)
+    cursor=cursor.execute(sql_query)
+    formNew=SearchUserForm()
+    prjDetails=cursor.fetchall()
+    stdID=userDetails()[0][1]
+    return render_template('project_revamp.html', prjDetails=prjDetails, stdID=stdID, formNew=formNew)
+
 
 
 @main.route('/sendMsg/<int:to_id>/<string:personName>',methods=['GET','POST'])
@@ -242,7 +257,7 @@ def inbox(to_id,personName):
     # print(msg)
     # sendMessage(to_id,msg)
     msgList=getMessage(to_id)
-    print(msgList)
+    # print(msgList)
     return render_template('inbox.html',formNew=formNew,to_id=to_id,form=form,msgList=msgList,personName=personName)
 
 
@@ -253,15 +268,35 @@ def sponsorList():
     return render_template('sponsors_list.html',sponsors=sponsors,formNew=formNew)
 
 
+
 @main.route('/editProfile',methods=['GET','POST'])
 def editProfile():
     formNew=SearchUserForm()
-    return render_template('edit_profile_form.html',formNew=formNew)
+    form=EditProfile()
+    if request.method=='POST':
+        stud_name=form.stud_name.data
+        stud_email=form.stud_email.data
+        stud_des=form.stud_des.data
+        stud_interest=form.stud_interest.data
+
+        list_of_interest=stud_interest.split(",")
+        conn = db_connection()
+        cursor=conn.cursor()
+        sql_query='''
+        UPDATE Student 
+        SET student_desc ="{}" WHERE student_id={}
+        '''.format(stud_des,userDetails()[0][0])
+        cursor.execute(sql_query)
+       
+        current_user.email=stud_email
+
+        return redirect('/account')
+    return render_template('edit_profile_form.html',formNew=formNew,form=form)
 
 @main.route('/myProfile/<int:id>/<string:tou>',methods=['GET','POST'])
 def myProfile(id,tou):
     #current_user = > type , id
-    print(tou)
+    # print(tou)
     followStatus="Followed"
     usr_det=userDetailsLike(id,tou)
     pr = isFollowed(usr_det)
@@ -293,8 +328,18 @@ def eventsForSponsor():
 def account():
     #current_user = > type , id
     usr_det=userDetails()
+    conn=db_connection()
+    cursor=conn.cursor()
+    sql_query='''SELECT count(follower_id) from Follow where following_id ={}'''.format(userDetails()[0][0])
+    follow_num=cursor.execute(sql_query).fetchall()[0]
+    sql_query = '''SELECT count(following_id) from Follow where follower_id ={}'''.format(userDetails()[0][0])
+    following_num = cursor.execute(sql_query).fetchall()[0]
+    sql_query = '''SELECT count(project_id) from ProjectLink where student_id ={}'''.format(userDetails()[0][0])
+    proj_num = cursor.execute(sql_query).fetchall()[0]
+    ProjInfo=getProjectList(usr_det)
+    # print(ProjInfo)
     formNew=SearchUserForm()
-    return render_template('account.html',usr_det=usr_det,formNew=formNew)
+    return render_template('account.html',ProjInfo=ProjInfo,proj_num=proj_num, usr_det=usr_det, formNew=formNew, follow_num=follow_num, following_num=following_num)
 
 @main.route('/sponsorAnEvent/<int:id>',methods=['GET','POST'])
 def sponsorAnEvent(id):
@@ -310,7 +355,7 @@ def sponsorAnEvent(id):
     eveSp=list()
     for e in eveSponsored:
         eveSp.append(e[0])
-    print(eveSp)
+    # print(eveSp)
     return render_template('event_for_sponsors.html',events=events,org_det=org_det,eveSp=eveSp,formNew=formNew)
 
 
@@ -353,7 +398,7 @@ def search():
 def createProject():
     form=AddProjectForm()
     formNew=SearchUserForm()
-    print("ProjectDes")
+    # print("ProjectDes")
     if request.method=='POST':
         ProjectTitle=form.projecttitle.data
         ProjectShortDes=form.projectShortDes.data
@@ -378,7 +423,7 @@ def createProject():
             cursor.execute(sql_query)
             submitter=cursor.fetchone()[0]
 
-            print(submitter)
+            # print(submitter)
 
             sql_query='''
             SELECT * FROM Project WHERE project_title="{}"
@@ -391,31 +436,31 @@ def createProject():
             sql_query='''
             INSERT INTO ProjectLink(project_id,student_id) VALUES(?,?)
             '''
-            print(submitter,project)
+            # print(submitter,project)
             cursor.execute(sql_query,(project,submitter))
             conn.commit()
 
             DATA=ProjectDatas[5]
             image=DATA[0][0]
-            return render_template('project.html',formNew=formNew,ProjectDatas=ProjectDatas,image=image.decode("utf-8"))
 
+            return redirect('/account')
         except Exception as e:
             print(e)
-        return redirect('/create-project')  
+        return redirect('/account')  
     return render_template('createProject.html',form=form,formNew=formNew)
 
 @main.route('/studentList',methods=['GET','POST'])
 def studentList():
     formNew=SearchUserForm()
     stud_list=getStudentList()
-    print(stud_list)
+    # print(stud_list)
     return render_template('students_list.html',formNew=formNew,stud_list=stud_list)
 
 @main.route('/organizerList',methods=['GET','POST'])
 def organizerList():
     formNew=SearchUserForm()
     organizer_list=getOrganizerList()
-    print(organizer_list)
+    # print(organizer_list)
     return render_template('organizers_list.html',formNew=formNew,organizer_list=organizer_list)
 
 @main.route('/getImage')
@@ -434,7 +479,7 @@ def getImage():
 @main.route('/follow/<int:id>/<string:tou>',methods=['GET','POST'])
 def follow(id,tou):
     formNew=SearchUserForm()
-    print("follow User")
+    # print("follow User")
     usr_det=userDetailsLike(id,tou)
     followStatus="Followed"
     usr_det=userDetailsLike(id,tou)
@@ -463,7 +508,7 @@ def registerForEvent(eventId):
         cursor.execute(sql_query)
         existing_team_data=cursor.fetchall()
         if len(existing_team_data)!=0:
-            print('Team ALready exists')
+            # print('Team ALready exists')
             flash("Team name already exists for this event")
         else:
             sql_query='''
@@ -473,10 +518,10 @@ def registerForEvent(eventId):
                 # FETCHING THE TUPLES OF THE TEAM-MATES FROM THE STUDENT TABLE
                 cursor.execute(sql_query)
                 student_data=cursor.fetchall()
-                print(student_data)
+                # print(student_data)
 
                 if len(student_data)==form.number_of_members.data:
-                    print("True")
+                    # print("True")
 
                     #INSERING TEAM INTO THE TABLE 
                     sql_query_01='''
@@ -487,7 +532,7 @@ def registerForEvent(eventId):
                         conn.commit()
                     except Exception as e:
                         print("Inserting into team table")
-                        print(e)
+                        # print(e)
 
                     #FETCHING TEAM DETAILS
                     sql_query_02='''
@@ -495,7 +540,7 @@ def registerForEvent(eventId):
                     '''.format("team_name",form.team_name.data)
                     cursor.execute(sql_query_02)
                     team_data=cursor.fetchone()
-                    print(team_data)
+                    # print(team_data)
 
                     #INSERTING THE PARTICIPANTS INTO THE PARTICIPANT TABLE
                     sql_query_03='''
@@ -507,7 +552,7 @@ def registerForEvent(eventId):
                             conn.commit()
                         except Exception as e:
                             print("Inserting into partcipants table")
-                            print(e)
+                            # print(e)
 
 
                 else:
@@ -531,7 +576,7 @@ def comment():
             cursor.execute(sql_query)
             data=cursor.fetchall()
             student_id=data[0][0]
-            print(student_id)
+            # print(student_id)
             sql_query='''
             INSERT INTO Comment ({},{},{}) values(?,?,?)
             '''.format("project_id","commenter_id","comment_content")
@@ -577,12 +622,12 @@ def eventDetailsForStudent(eventId):
 
     cursor.execute(sql_query)
     visitor_id=cursor.fetchall()[0][0]
-    print(visitor_id)
-    print(eventId)
+    # print(visitor_id)
+    # print(eventId)
     sql_query='''
     SELECT * FROM Participants WHERE student_id={} AND event_id={}
     '''.format(visitor_id,eventId)
-    print(sql_query)
+    # print(sql_query)
     cursor.execute(sql_query)
     data=cursor.fetchall()
     # print(datas)
@@ -611,21 +656,19 @@ def Timeline():
     sql_query='''SELECT follower_id FROM Follow WHERE following_id = {}'''.format(userid)
     # cursor.execute(sql_query).fetchall()
     det=cursor.execute(sql_query).fetchall()
-    print(det)
     det2=list()
     for i in det:
         # print(i)
         sql_query='''SELECT project_id FROM ProjectLink WHERE student_id ={}'''.format(i[0])
         x=cursor.execute(sql_query).fetchall()
-        print(x)
         if x!=[]:
             sql_query='''SELECT * FROM Student WHERE student_id ={}'''.format(i[0])
-            p=cursor.execute(sql_query).fetchall()[0]
+            p=cursor.execute(sql_query).fetchall()
             sql_query='''SELECT * FROM Project WHERE project_id ={}'''.format(x[0][0])
-            p2=cursor.execute(sql_query).fetchall()[0]
-            det2.append([p2,p])
+            p2=cursor.execute(sql_query).fetchall()
+            if p!=[] and p2!=[]:
+                det2.append([p2[0],p[0]])
             # print(x)
-    print("det",det2[0][1])
     return render_template('log_timeline.html',formNew=formNew,det2=det2)
     
 

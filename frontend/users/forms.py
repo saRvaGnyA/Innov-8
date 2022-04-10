@@ -1,10 +1,10 @@
 from multiprocessing import Event
 from wsgiref.validate import validator
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed,FileRequired
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateField,TextAreaField
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateField, TextAreaField
 from flask_wtf.file import FileField, FileRequired
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateField,IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateField, IntegerField
 from markupsafe import Markup
 from wtforms.widgets import SubmitInput
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
@@ -21,13 +21,14 @@ def db_connection():
         print(e)
     return conn
 
+
 def GetEventsTypes():
     conn = db_connection()
     cursor = conn.cursor()
     sql_query = '''
     SELECT * FROM EventType;
     '''
-    cursor=cursor.execute(sql_query)
+    cursor = cursor.execute(sql_query)
     print(cursor)
     return cursor.fetchall()
 
@@ -40,53 +41,65 @@ def GetEventsTypes():
 
 # class SearchEvent(FlaskForm):
 #     searchuser = StringField('Project Title',validators=[DataRequired()])
-#     submit=SubmitField('Add')   
+#     submit=SubmitField('Add')
 
 
+class EditProfile(FlaskForm):
+ stud_name = StringField(validators=[DataRequired()])
+ stud_email = StringField(validators=[DataRequired()])
+ stud_des = StringField(validators=[DataRequired()])
+ stud_interest=StringField(validators=[DataRequired()])
+ submit = SubmitField('Submit')
 
 class SearchUserForm(FlaskForm):
-    User_choices= [('1','Student'),('2','Organizer'),('3','Sponsor')]
-    dropdown=SelectField(u'Hour',choices=User_choices)
-    searchuser = StringField('Project Title',validators=[DataRequired()])
-    submit=SubmitField('Search')
+    User_choices = [('1', 'Student'), ('2', 'Organizer'), ('3', 'Sponsor')]
+    dropdown = SelectField(u'Hour', choices=User_choices)
+    searchuser = StringField('Project Title', validators=[DataRequired()])
+    submit = SubmitField('Search')
+
 
 class AddProjectForm(FlaskForm):
     # Event_choices= GetEventsTypes()
     # eventsdropdown=SelectField(u'Events',choices=Event_choices)
-    projecttitle = StringField('Project Title',validators=[DataRequired()])
-    projectShortDes = StringField('Project Description',validators=[DataRequired()])
-    projectDes = StringField('Project Description',validators=[DataRequired()])
-    driveLink = StringField('drive link',validators=[DataRequired()])
-    richText = StringField('rich text',validators=[DataRequired()])
-    projectImg = FileField('images',validators=[FileRequired(),])
+    projecttitle = StringField('Project Title', validators=[DataRequired()])
+    projectShortDes = StringField(
+        'Project Description', validators=[DataRequired()])
+    projectDes = StringField('Project Description',
+                             validators=[DataRequired()])
+    driveLink = StringField('drive link', validators=[DataRequired()])
+    richText = StringField('rich text', validators=[DataRequired()])
+    projectImg = FileField('images', validators=[FileRequired(), ])
     # eventloc = StringField('Event Location',validators=[DataRequired()])
     # eventdec = StringField('Event Description',validators=[DataRequired()])
-    submit=SubmitField('Add Project')
+    submit = SubmitField('Add Project')
+
 
 class AddEventForm(FlaskForm):
-    Event_choices= GetEventsTypes()
-    eventsdropdown=SelectField(u'Events',choices=Event_choices)
-    eventstartdate = DateField('StartDate',validators=[DataRequired()])
-    eventenddate = DateField('StartDate',validators=[DataRequired()])
-    eventloc = StringField('Event Location',validators=[DataRequired()])
-    eventdec = StringField('Event Description',validators=[DataRequired()])
-    submit=SubmitField('Add')
+    Event_choices = GetEventsTypes()
+    eventsdropdown = SelectField(u'Events', choices=Event_choices)
+    eventstartdate = DateField('StartDate', validators=[DataRequired()])
+    eventenddate = DateField('StartDate', validators=[DataRequired()])
+    eventloc = StringField('Event Location', validators=[DataRequired()])
+    eventdec = StringField('Event Description', validators=[DataRequired()])
+    submit = SubmitField('Add')
 
 
 class RegistrationForm(FlaskForm):
-    User_choices= [('1','Student'),('2','Organizer'),('3','Sponsor')]
-    dropdown=SelectField(u'Hour',choices=User_choices)
-    username = StringField('Username',validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',validators=[DataRequired(), Email()])
+    User_choices = [('1', 'Student'), ('2', 'Organizer'), ('3', 'Sponsor')]
+    dropdown = SelectField(u'Hour', choices=User_choices)
+    username = StringField('Username', validators=[
+                           DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',validators=[DataRequired(), EqualTo('password')])
-    submit=SubmitField()
+    confirm_password = PasswordField('Confirm Password', validators=[
+                                     DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
 
 
 class LoginForm(FlaskForm):
-    User_choices= [('1','Student'),('2','Organizer'),('3','Sponsor')]
-    dropdown=SelectField(u'Hour',choices=User_choices)
-    email = StringField('Email',validators=[DataRequired(), Email()])
+    User_choices = [('1', 'Student'), ('2', 'Organizer'), ('3', 'Sponsor')]
+    dropdown = SelectField(u'Hour', choices=User_choices)
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
@@ -132,21 +145,25 @@ class LoginForm(FlaskForm):
 
 class Message(FlaskForm):
     message = StringField("Type your message…")
-    submit=SubmitField("Send")
+    submit = SubmitField("Send")
+
 
 class EventRegisterForm(FlaskForm):
-    team_name=StringField("Team name",validators=[DataRequired()])
-    number_of_members=IntegerField("Number of Teammates",validators=[DataRequired()])
-    member_01_email=StringField('Email of Team Member 1',validators=[DataRequired()])
-    member_02_email=StringField('Email of Team Member 2')
-    member_03_email=StringField('Email of Team Member 3')
-    member_04_email=StringField('Email of Team Member 4')
-    submit=SubmitField('Make Team')
+    team_name = StringField("Team name", validators=[DataRequired()])
+    number_of_members = IntegerField(
+        "Number of Teammates", validators=[DataRequired()])
+    member_01_email = StringField(
+        'Email of Team Member 1', validators=[DataRequired()])
+    member_02_email = StringField('Email of Team Member 2')
+    member_03_email = StringField('Email of Team Member 3')
+    member_04_email = StringField('Email of Team Member 4')
+    submit = SubmitField('Make Team')
+
 
 class CommentForm(FlaskForm):
-    comment=StringField("Comment",validators=[DataRequired()])
-    submit=SubmitField("Comment")
+    comment = StringField("Comment", validators=[DataRequired()])
+    submit = SubmitField("Comment")
 
 
 class studentToSubmitProject(FlaskForm):
-    submit=SubmitField("Submit project")
+    submit = SubmitField("Submit project")
