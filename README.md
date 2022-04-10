@@ -7,7 +7,7 @@
 </h1>
  
 <div align="center">
-   <strong>Innov-8</strong> - A platform to nurture a passion for STEM in school students <br>
+   <strong>Innov-8</strong> - A platform to provide opportunities for school students interested in STEM <br>
   KJSCE Hack 6.0 || Team DCodeStarBots
 </div>
 
@@ -33,7 +33,7 @@
 <table>
   <tr>
     <td>
-      A platform to nurture a passion for STEM in school students
+      Are you a student interested in STEM, but not backed by your school due to lack of opportuninites? Worry not, Innov-8 is here to bridge the gap. Innov-8 is a platform where like-minded STEM enthusiasts can connect and team up together, explore various opportunities, create and share projects, connect with mentors. As a student, having a source of sharing their school projects publicly online itself serves as a motivation factor for them. Innov-8 is not only a platform for students, but also a one-stop platform for the unorganized sector of science exhibitions. Often, science exhibitions are limited only to a specific school, although the school might want to draw in more competition. Especially after the pandemic, organizers realize the need of having an online presence. <br> To draw a analogy, Innov-8 is for school-level science event organizers what Devfolio is for hackathons. A single platform to streamline the entire process. <br> Talking about commercial viability, sponsors are always interested in funding events for school students. Innov-8 also serves as a platform to connect organizers with interested sponsors. 
     </td>
   </tr>
   </table>
