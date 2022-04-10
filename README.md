@@ -54,11 +54,62 @@
 
 ## 📈Progress
 
-- [x] ss
+3 Access Levels
+- [x] Student
+- [x] Organizer
+- [x] Sponsor
+
+Organizer
+- [x] Host an event (science exhibition, quiz competition, seminar)
+- [x] Call for applicants to the event
+- [x] Contact sponsors for sponsoring their events
+
+Student
+- [x] Public Profile with basic details
+- [x] Add and display projects on the profile, share the projects publicly
+- [x] Apply to events
+- [x] Search like-minded peers based on interests specified during registration
+- [x] Make teams for events
+- [x] Messaging Inbox for contacting 
+- [x] Browse a timeline to search for like-minded peers, view projects from other students, like and share them
+
+Project
+- [x] Add project description with images
+- [x] Add external videos
+- [x] Share your projects to your friends, teachers and parents
+- [x] Likes and comments on the project
+
+Event
+- [x] Call for applicant registrations
+- [x] Register teams
+- [x] Accept submissions for teams participating in the event
+- [x] Voting for the teams
+- [x] Contact mentors using messaging inbox feature
+
+Sponsor
+- [x] Browse for competitions to potentially sponsor
+- [x] Contact organizers using messaging inbox feature 
 
 ## 🔮Future Scope
 
-- ss
+For organizers who organize the events, we can add
+- Livestreaming the event
+- Complete announcement of results on the platform itself
+- RSVP for friends and parents
+
+For projects
+- Improve project videos addition
+- Add rich-text description features (since students might not be familiar with markdown) - partially implemented
+
+For students
+- Add a recommendation system to improve the timeline of the user
+- Add general "posts" apart from adding projects
+- Connect local student groups together, allow collaborations, meetups
+
+Mentor access level
+- Add another access level for mentors
+- These voluntary mentors can guide interested students on their projects and interests
+
 
 ## ⚙Database Schema
 
